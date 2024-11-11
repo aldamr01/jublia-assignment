@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables file
+.env
+*.env
+!.example.env
+
+# Flask cache
+instance/
+.cache
+
+# Database and migrations
+*.db
+*.sqlite
+*.sqlite3
+migrations/
+
+# Flask uploads
+uploads/
+
+# Logs
+*.log
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+coverage.xml
+*.cover
+.cache
+nosetests.xml
+pytest_cache/
+.pytest_cache/
+.pytest_cache/*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE and editor folders/files
+.vscode/
+.idea/
+*.swp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python virtual environment
+.venv/
+.venv.bak
+venv/
+venv.bak/
+.env.bak/
+
+# PyInstaller
+*.spec
+
+# pyproject.toml and poetry.lock for Poetry
+poetry.lock
+pyproject.toml

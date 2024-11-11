@@ -1,0 +1,15 @@
+{% macro render_field(field, class="", placeholder="") %}
+    {{ field.label(class_="form-label") }}
+  
+    {{ field(class_=class, placeholder_=placeholder)|safe }}
+
+    {% if field.errors %}
+        <div id="{{ field.id }}" class="invalid-feedback">
+            <ul>
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endmacro %}

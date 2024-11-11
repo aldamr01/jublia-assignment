@@ -1,0 +1,88 @@
+{% extends "base/root.j2" %}
+
+{% from "base/_helper.j2" import render_field %}
+
+{% block title %}
+    Email Broadcaster
+{% endblock %}
+
+{% block inline_style %}
+    {{ super() }}
+
+    .divider {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+{% endblock %}
+
+{% block style %}    
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="row justify-content-center">      
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Email Broadcast Schedule</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method=post>
+                            <div class="mb-3">
+                                {{ render_field(form.event, "form-control") }}                                
+                            </div>                            
+                            <div class="mb-3">
+                                {{ render_field(form.subject, "form-control", "Email Subject") }} 
+                            </div>
+                            <div class="mb-3">
+                                {{ render_field(form.body, "form-control", "Email Body") }} 
+                            </div>
+                            <div class="mb-3">
+                                {{ render_field(form.schedule_at, "form-control") }} 
+                            </div>                                               
+                            <button type="submit" class="btn btn-primary w-100">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>        
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 align="center">Data</h2>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Scheduled At</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                             <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ schedule.subject }}</td>
+                                <td>{{ schedule.scheduled_at}}</td>
+                                <td>-</td>
+                            </tr>
+                        {% endfor %}                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        $('#email-schedule').datetimepicker({ footer: true, modal: true, format:'yyyy-mm-dd H:M' });
+    </script>
+{% endblock %}
