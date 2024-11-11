@@ -5,21 +5,27 @@ from sqlalchemy.orm import sessionmaker
 from src.models.event import Event
 from src.services.database import engine
 
-session = sessionmaker(bind=engine)
-events = session().query(Event).all()
-event_data = [(e.id, e.name) for e in events]
-session().close()
 
-class CreateForm(Form):
-    event = SelectField(
-        'Event', 
-        [validators.DataRequired()], 
-        choices=event_data,
-        id="email-event"
-    )
+
+class CreateForm(Form):    
     subject = StringField('Subject', [validators.Length(min=1, max=35)])
     body = TextAreaField('Content', [validators.Length(min=1)])
     schedule_at = StringField(
         'Schedule Time',
         id="email-schedule"
     )
+    
+    def __init__(self, username, *args, **kwargs):        
+        super(CreateForm, self).__init__(*args, **kwargs)
+        
+        session = sessionmaker(bind=engine)
+        events = session().query(Event).all()
+        event_data = [(e.id, e.name) for e in events]
+        session().close()        
+        
+        self.event = SelectField(
+            'Event', 
+            [validators.DataRequired()], 
+            choices=event_data,
+            id="email-event"
+        )
