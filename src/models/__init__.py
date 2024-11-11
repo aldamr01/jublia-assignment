@@ -16,3 +16,5 @@ def init_db():
     import src.models.email_broadcast
     
     Base.metadata.create_all(bind=engine)
+    
+    print("Database initialize success")
