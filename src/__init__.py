@@ -9,6 +9,7 @@ from src.routes import route
 from src.event.scheduler import Scheduler
 from src.event.listener import Listener
 from src.services.rabbitmq import RabbitMQ
+# from src.services.email import mail
 
 
 load_dotenv(override=True)
@@ -19,16 +20,19 @@ rabbit = RabbitMQ()
 
 current_state = bool(int(os.environ.get("APP_PRODUCTION", 1)))
 
-config = Config().production_config if current_state else Config().dev_config
+current_env = Config().PRODUCTION_CONFIG if current_state else Config().DEV_CONFIG
 
-app.env = config.ENV
+app.env = current_env.ENV
 
 app.register_blueprint(route)
+
+# app.config.from_object(Config)
 
 app.cli.add_command(init_db)
 app.cli.add_command(cache_env_clear)
 
 rabbit.init_queue()
+# mail.init_app(app)
 
 Scheduler.start()
 Listener.start()
