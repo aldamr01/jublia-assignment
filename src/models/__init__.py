@@ -15,6 +15,9 @@ def init_db():
     import src.models.event
     import src.models.email_broadcast
     
-    Base.metadata.create_all(bind=engine)
-    
-    print("Database initialize success")
+    print("Attempting to create tables...")
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created successfully.")
+    except Exception as e:
+        print(f"Error during table creation: {e}")
