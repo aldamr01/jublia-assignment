@@ -1,11 +1,14 @@
+import os
+
 from flask import Flask
+from dotenv import load_dotenv
+
 from console import init_db, cache_env_clear
 from src.config import Config
 from src.routes import route
 from src.event.scheduler import Scheduler
+from src.event.listener import Listener
 from src.services.rabbitmq import RabbitMQ
-from dotenv import load_dotenv
-import os
 
 
 load_dotenv(override=True)
@@ -28,3 +31,4 @@ app.cli.add_command(cache_env_clear)
 rabbit.init_queue()
 
 Scheduler.start()
+Listener.start()

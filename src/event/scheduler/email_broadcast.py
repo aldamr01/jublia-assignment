@@ -13,16 +13,17 @@ from src.services.rabbitmq import RabbitMQ
 
 
 def main():
-    s = sessionmaker(bind=engine)
-    c = RabbitMQ()
-    cn = c.connection
-    ch = cn.channel()
+    rabbitmq = RabbitMQ()
+    session = sessionmaker(bind=engine)
+    
+    s = session()
+    ch = rabbitmq.connection().channel()    
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
-    broadcasts = s().query(EmailBroadcast).where(EmailBroadcast.scheduled_at==current_time)
-    users = s().query(User).all()
+    broadcasts = s.query(EmailBroadcast).where(EmailBroadcast.scheduled_at==current_time)
+    users = s.query(User).all()
     
-    s().close
+    s.close
 
     for broadcast in broadcasts:
         bsubject = broadcast.subject
@@ -33,7 +34,7 @@ def main():
             queue_email(user.email, broadcast.id, ch)
             print(f"Queue for broadcast {bsubject} to user: {email}")
         
-    ch.close()
+    rabbitmq.connection().close()
     
 def queue_email(user_email, broadcast_id, channel: BlockingChannel):
     body = json.dumps({
