@@ -1,15 +1,17 @@
 import pika
-
+from src.config import Config
 
 class RabbitMQ:
+    def __init__(self):
+        self.config = Config()
     
-    def connection(self):                
+    def connection(self):
         try:
             return pika.BlockingConnection(pika.ConnectionParameters(
-                host="127.0.0.1", 
-                port=5672, 
-                credentials=pika.PlainCredentials(username="leii", password="kn00b"),
-                virtual_host="jublia"
+                host=self.config.RABBITMQ_HOST,
+                port=self.config.RABBITMQ_PORT,
+                credentials=pika.PlainCredentials(username=self.config.RABBITMQ_USER, password=self.config.RABBITMQ_PASSWORD),
+                virtual_host=self.config.RABBITMQ_VHOST
             ))
         except pika.exceptions.AMQPConnectionError as e:
             print(f"Error when try to initialize connection, got: {e}")
@@ -19,10 +21,10 @@ class RabbitMQ:
     def init_queue(self):
         try:
             connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host="127.0.0.1", 
-                port=5672, 
-                credentials=pika.PlainCredentials(username="leii", password="kn00b"),
-                virtual_host="jublia"
+                host=self.config.RABBITMQ_HOST,
+                port=self.config.RABBITMQ_PORT,
+                credentials=pika.PlainCredentials(username=self.config.RABBITMQ_USER, password=self.config.RABBITMQ_PASSWORD),
+                virtual_host=self.config.RABBITMQ_VHOST
             ))
             
             ch = connection.channel()

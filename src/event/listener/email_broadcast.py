@@ -37,12 +37,13 @@ def send_email(ch: BlockingChannel, method: Basic.Deliver, properties: BasicProp
         
         session = sessionmaker(bind=engine)
         s = session()
+        mail_connection = mail.connection()
         
         broadcast = s.query(EmailBroadcast).where(EmailBroadcast.id==broadcast_id).one()
         recepients = [email]
         
         print(f" Subject: broadcast.subject, to recepient: {email}")
-        mail.sendmail(broadcast.subject, broadcast.body, email, "testing@test.com")
+        mail.sendmail(mail_connection, broadcast.subject, broadcast.body, email, "testing@test.com")
         print("Email sent.")
         
     except Exception as e:

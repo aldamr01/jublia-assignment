@@ -1,22 +1,33 @@
 import smtplib
 from email.mime.text import MIMEText
 
+from src.config import Config
+
 class Mail:
     
     def __init__(self):
-        self.host = "sandbox.smtp.mailtrap.io"
-        self.port = 587
-        self.username = "0b6b3b80de9def"
-        self.password = "f2d25cc27b329e"
+        self.config = Config()
         
-        self.connection = smtplib.SMTP(host=self.host, port=self.port)
-        self.connection.ehlo()
-        self.connection.starttls()
-        self.connection.login(self.username, self.password)
+        self.host = self.config.MAIL_SERVER
+        self.port = self.config.MAIL_PORT
+        self.username = self.config.MAIL_USERNAME
+        self.password = self.config.MAIL_PASSWORD
         
-    def sendmail(self, subject: str, body: str, dest: str, sender: str):
+    def connection(self):
+        connection = None
+
         try:
-            cn = self.connection
+            connection = smtplib.SMTP(host=self.host, port=self.port)
+            connection.ehlo()
+            connection.starttls()
+            connection.login(self.username, self.password)
+        except Exception as e:
+            print(f"Error connecting to mail server, got {e}")
+            
+        return connection
+        
+    def sendmail(self, connection, subject: str, body: str, dest: str, sender: str):
+        try:            
             text_subtype = 'plain'
 
             content=f"""\
@@ -27,6 +38,6 @@ class Mail:
             msg['Subject'] = subject
             msg['From'] = sender 
 
-            cn.sendmail(msg=msg.as_string(),from_addr=sender, to_addrs=dest)
+            connection.sendmail(msg=msg.as_string(),from_addr=sender, to_addrs=dest)
         except Exception as e:
             print(f"Error when sending email, got: {e}")
