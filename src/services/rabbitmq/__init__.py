@@ -26,9 +26,11 @@ class RabbitMQ:
             ))
             
             ch = connection.channel()
-            ch.queue_declare("email_broadcast", durable=True)
-            
+            ch.exchange_declare(exchange="email_broadcast_exchange", durable=True)
+            ch.queue_declare("email_broadcast_queue", durable=True)
+            ch.queue_bind(exchange="email_broadcast_exchange", queue="email_broadcast_queue", routing_key="email_broadcast_route")
             connection.close()
+
         except pika.exceptions.AMQPConnectionError as e:
             print(f"Error when try to initialize queue, got: {e}")
     

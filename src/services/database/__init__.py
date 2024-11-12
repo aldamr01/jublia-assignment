@@ -2,12 +2,11 @@ from sqlalchemy import create_engine
 import os, ssl
 from dotenv import load_dotenv
 
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__name__), "../../../.."))
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 dotenv_path = os.path.join(root_dir, ".env")
+engine = None
 
 load_dotenv(dotenv_path, override=True)
-
-engine = None
 
 db_driver = os.environ.get("DB_CONNECTION", "mysql")
 

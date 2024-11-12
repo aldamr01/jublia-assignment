@@ -1,12 +1,12 @@
-import threading, json
+import threading, json, smtplib
 
 from pika.adapters.blocking_connection import BlockingChannel
 from pika.spec import BasicProperties, Basic
 from sqlalchemy.orm import sessionmaker
 
+from src.services.email import Mail
 from src.services.database import engine
 from src.services.rabbitmq import RabbitMQ
-from src.services.email import mail
 from src.models.email_broadcast import EmailBroadcast
 
 def main():
@@ -27,6 +27,7 @@ def consumer():
 def send_email(ch: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes):
     print(" Received %s" % body.decode())
     decoded_body = body.decode()
+    mail = Mail()
     
     try:
         decoded_json = json.loads(decoded_body)
@@ -40,7 +41,9 @@ def send_email(ch: BlockingChannel, method: Basic.Deliver, properties: BasicProp
         broadcast = s.query(EmailBroadcast).where(EmailBroadcast.id==broadcast_id).one()
         recepients = [email]
         
-        mail.send_message(broadcast.subject, recepients, broadcast.body)
+        print(f" Subject: broadcast.subject, to recepient: {email}")
+        mail.sendmail(broadcast.subject, broadcast.body, email, "testing@test.com")
+        print("Email sent.")
         
     except Exception as e:
         print(f"Error, got: {e}")
