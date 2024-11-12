@@ -2,6 +2,10 @@
 
 Jublia assignment project.
 
+**Note:**
+1. Run well on MacOS, but have several problem on windows.
+2. Use branch `ontime-master` if want to run or evaluate my test based on the time that Ajeng's gave to me (23:59).
+
 ## Table of Contents
 - [About](#about)
 - [Features](#features)
@@ -53,5 +57,3 @@ Simple email broadcaster WebApp.
 6. **Run development app**
     ```bash
     python app.py
-
-
