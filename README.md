@@ -40,12 +40,18 @@ Simple email broadcaster WebApp.
     - fill the `MYSQL_*` environment variable using your MySQL credentials.
     - etc.
 
-4. **Initialize database**
+4. **Update the Environment**
+    - rename file `.env.example` to `.env`
+    - make sure you already fill all these credentials, especially RABBITMQ, MySQL, and MAIL.
+
+5. **Initialize database**
     - create a new DB in your machine.
     - then run this command:
     ```bash
     flask init-db
 
-5. **Run development app**
+6. **Run development app**
     ```bash
     python app.py
+
+
