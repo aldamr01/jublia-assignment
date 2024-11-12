@@ -17,13 +17,13 @@ match db_driver:
         user = os.environ.get("MYSQL_USERNAME")
         password = os.environ.get("MYSQL_PASSWORD")
         database = os.environ.get("MYSQL_DATABASE")
-        engine = create_engine(f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}", connect_args={
-            "ssl": {
-                "check_hostname": False,
-                "verify_mode": ssl.CERT_NONE
+        engine = create_engine(
+            f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}",
+            connect_args={
+                "ssl": {"check_hostname": False, "verify_mode": ssl.CERT_NONE},
+                "charset": "utf8mb4",
             },
-            "charset": "utf8mb4"
-        })
-        
+        )
+
     case "sqlite":
-        engine = create_engine('sqlite:////tmp/test.db')
+        engine = create_engine("sqlite:////tmp/test.db")

@@ -11,6 +11,7 @@ from src.event.scheduler.email_broadcast import main as eb_main
 class Scheduler:
     def start():
         scheduler = Apscheduler()
-        scheduler.add_schedule(eb_main, IntervalTrigger(seconds=60), id="event-broadcast-scheduler")
+        scheduler.add_schedule(
+            eb_main, IntervalTrigger(seconds=60), id="event-broadcast-scheduler"
+        )
         scheduler.start_in_background()
-            

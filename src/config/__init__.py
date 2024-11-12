@@ -4,12 +4,12 @@ import os
 
 from dotenv import load_dotenv
 
+
 class Config:
     def __init__(self) -> None:
         self.DEV_CONFIG = DevConfig()
         self.PRODUCTION_CONFIG = ProductionConfig()
-            
-    
+
     MAIL_SERVER = os.getenv("MAIL_SERVER", "127.0.0.1")
     MAIL_PORT = int(os.getenv("MAIL_PORT", 587))
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "true").lower() in ["true", "1"]

@@ -2,8 +2,9 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 from src.models import Base
 
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(Integer(), nullable=False, primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -14,4 +15,4 @@ class User(Base):
         self.email = email
 
     def __repr__(self) -> None:
-        return f'<User {self.name!r}>'
+        return f"<User {self.name!r}>"
