@@ -3,13 +3,12 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 
-from console import init_db, cache_env_clear
+from console import init_db, cache_env_clear, init_queue
 from src.config import Config
 from src.routes import route
 from src.event.scheduler import Scheduler
 from src.event.listener import Listener
 from src.services.rabbitmq import RabbitMQ
-# from src.services.email import mail
 
 
 load_dotenv(override=True)
@@ -30,9 +29,9 @@ app.register_blueprint(route)
 
 app.cli.add_command(init_db)
 app.cli.add_command(cache_env_clear)
+app.cli.add_command(init_queue)
 
 rabbit.init_queue()
-# mail.init_app(app)
 
 Scheduler.start()
 Listener.start()

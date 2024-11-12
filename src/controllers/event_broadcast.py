@@ -10,36 +10,33 @@ base_template = "modules/event_broadcast/"
 
 session = sessionmaker(bind=engine)
 
-@event_broadcast.route('/save_emails', methods=["POST", "GET"])
-def save_emails():    
+
+@event_broadcast.route("/save_emails", methods=["POST", "GET"])
+def save_emails():
     f = CreateForm(request.form)
     s = session()
-    
+
     if request.method == "POST" and f.validate():
-        
-        
+
         email_broadcast_data = EmailBroadcast(
-            event_id= f.event.data,
-            subject= f.subject.data,
-            body= f.body.data,
-            scheduled_at= f.schedule_at.data
+            event_id=f.event.data,
+            subject=f.subject.data,
+            body=f.body.data,
+            scheduled_at=f.schedule_at.data,
         )
-        
+
         try:
             s.add(email_broadcast_data)
         except Exception as e:
             s.rollback()
             print(f"Error when saving data, got: {e}")
-            
+
         s.commit()
-        
+
     schedules = s.query(EmailBroadcast).all()
-    
+
     s.close()
-               
-    return render_template(f"{base_template}index.j2", **{
-        "form": f,
-        "schedules": schedules
-    })
-    
-    
+
+    return render_template(
+        f"{base_template}index.j2", **{"form": f, "schedules": schedules}
+    )
